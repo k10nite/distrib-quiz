@@ -5,120 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <title>Network Homogeneity Quiz</title>
     <style>
+        :root {
+            --nasa-blue: #0B3D91;
+            --nasa-light: #1E90FF;
+            --lockheed-red: #C8102E;
+            --mars-orange: #E57C23;
+            --space-black: #0a0a0f;
+            --deep-space: #1a1a2e;
+            --correct-green: #00FF88;
+            --warning-yellow: #FFD93D;
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             height: 100%;
             overflow: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--space-black);
+            color: white;
             -webkit-tap-highlight-color: transparent;
-            touch-action: pan-y;
         }
 
-        .slide-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
+        /* Starfield Background */
+        .starfield {
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 200px 50px, white, transparent);
+            background-size: 250px 250px;
+            animation: twinkle 4s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: var(--sat);
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--nasa-blue), var(--correct-green));
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--correct-green);
+        }
+
+        /* Slide Container */
+        .slides-container {
+            position: fixed;
+            inset: 0;
+            padding-top: calc(20px + var(--sat));
+            padding-bottom: calc(80px + var(--sab));
             overflow: hidden;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 1;
         }
 
         .slide {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
-            padding-top: calc(40px + env(safe-area-inset-top));
-            padding-bottom: calc(100px + env(safe-area-inset-bottom));
-            padding-left: calc(20px + env(safe-area-inset-left));
-            padding-right: calc(20px + env(safe-area-inset-right));
+            padding: 30px;
+            padding-top: calc(40px + var(--sat));
+            padding-bottom: calc(100px + var(--sab));
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            color: white;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
         }
 
         .slide.active {
             transform: translateX(0);
+            opacity: 1;
         }
 
         .slide.exit {
             transform: translateX(-100%);
+            opacity: 0;
         }
 
         /* Title Slide */
         .title-slide h1 {
-            font-size: 3.5rem;
-            color: #00ffff;
+            font-size: clamp(2rem, 8vw, 4.5rem);
             text-align: center;
+            background: linear-gradient(135deg, var(--nasa-light), var(--correct-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 20px;
-            text-shadow: 0 0 30px rgba(0,255,255,0.5);
+            animation: glow-pulse 2s ease-in-out infinite;
         }
 
-        .title-slide p {
-            font-size: 1.5rem;
-            color: #888;
-            margin-bottom: 40px;
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0,255,136,0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0,255,136,0.6)); }
         }
 
-        .title-slide .start-btn {
-            background: #00ffff;
-            color: #000;
+        .title-slide .subtitle {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 50px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--nasa-blue), var(--lockheed-red));
             border: none;
             padding: 20px 60px;
-            font-size: 1.3rem;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
             font-weight: bold;
+            color: white;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .title-slide .start-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(0,255,255,0.5);
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
 
         /* Question Slides */
-        .question-slide {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
         .question-number {
-            font-size: 1.2rem;
-            color: #00ffff;
-            margin-bottom: 20px;
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            color: var(--correct-green);
             letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
         .question-text {
-            font-size: 2rem;
+            font-size: clamp(1.3rem, 5vw, 2.5rem);
             text-align: center;
             max-width: 900px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             line-height: 1.4;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        .choices-container {
+        .choices {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -126,716 +172,537 @@
             max-width: 700px;
         }
 
-        .choice-box {
+        .choice {
             background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            padding: 20px 30px;
+            border: 2px solid rgba(255,255,255,0.15);
+            padding: 18px 25px;
             border-radius: 15px;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 4vw, 1.4rem);
             display: flex;
             align-items: center;
-            gap: 20px;
-            transition: all 0.3s;
-        }
-
-        .choice-box:hover {
-            background: rgba(0,255,255,0.1);
-            border-color: #00ffff;
+            gap: 15px;
+            transition: all 0.3s ease;
         }
 
         .choice-letter {
-            background: #00ffff;
-            color: #000;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--nasa-blue), var(--lockheed-red));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.2rem;
             flex-shrink: 0;
         }
 
         /* Exchange Slide */
         .exchange-slide {
-            background: linear-gradient(135deg, #2a1a4a 0%, #1a2a4a 100%);
+            background: radial-gradient(circle at center, rgba(255,215,0,0.1), transparent 60%);
+        }
+
+        .exchange-icon {
+            font-size: 6rem;
+            animation: rotate-exchange 2s ease-in-out infinite;
+            margin-bottom: 30px;
+        }
+
+        @keyframes rotate-exchange {
+            0%, 100% { transform: rotate(-10deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
         }
 
         .exchange-slide h1 {
-            font-size: 3rem;
-            color: #ffd700;
-            margin-bottom: 30px;
-            animation: pulse 1.5s infinite;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: var(--warning-yellow);
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+            margin-bottom: 20px;
+            animation: pulse-text 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .exchange-slide p {
-            font-size: 1.8rem;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .exchange-slide .icon {
-            font-size: 5rem;
-            margin: 30px 0;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: rgba(255,255,255,0.8);
         }
 
         /* Answer Slides */
         .answer-slide {
-            background: linear-gradient(135deg, #0a2a1a 0%, #1a3a2a 100%);
+            background: radial-gradient(circle at center, rgba(0,255,136,0.1), transparent 60%);
         }
 
-        .answer-slide .question-number {
-            color: #00ff88;
-        }
-
-        .answer-slide .correct-answer {
-            background: rgba(0,255,136,0.2);
-            border: 3px solid #00ff88;
+        .correct-answer {
+            background: rgba(0,255,136,0.1);
+            border: 3px solid var(--correct-green);
             padding: 30px 50px;
             border-radius: 20px;
-            margin-top: 30px;
+            margin-top: 20px;
+            animation: answer-pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .answer-slide .correct-answer .letter {
-            font-size: 4rem;
+        @keyframes answer-pop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .answer-letter {
+            font-size: clamp(3rem, 10vw, 5rem);
             font-weight: bold;
-            color: #00ff88;
+            color: var(--correct-green);
+            text-shadow: 0 0 30px var(--correct-green);
         }
 
-        .answer-slide .correct-answer .text {
-            font-size: 1.3rem;
-            color: #fff;
+        .answer-text {
+            font-size: clamp(1rem, 4vw, 1.5rem);
             margin-top: 10px;
+            color: white;
         }
 
-        /* Final Slide */
-        .final-slide h1 {
-            font-size: 3rem;
-            color: #00ff88;
+        /* Finale Slide */
+        .finale-slide h1 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: var(--correct-green);
             margin-bottom: 30px;
         }
 
-        .final-slide .score-text {
-            font-size: 1.5rem;
-            color: #888;
-            margin-bottom: 40px;
-        }
-
-        .final-slide .lesson-box {
+        .lesson-box {
             background: rgba(0,255,255,0.1);
-            border: 2px solid #00ffff;
-            padding: 30px 50px;
+            border: 2px solid var(--nasa-light);
+            padding: 30px 40px;
             border-radius: 20px;
             max-width: 800px;
             text-align: center;
         }
 
-        .final-slide .lesson-box p {
-            font-size: 1.3rem;
+        .lesson-box p {
+            font-size: clamp(1rem, 4vw, 1.4rem);
             line-height: 1.6;
         }
 
+        .lesson-box strong {
+            color: var(--correct-green);
+        }
+
         /* Navigation */
-        .nav-btn {
+        .nav-container {
             position: fixed;
-            bottom: 40px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 20px;
+            padding-bottom: calc(15px + var(--sab));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            z-index: 100;
+        }
+
+        .nav-btn {
             background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
             color: white;
-            padding: 15px 40px;
-            font-size: 1.1rem;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            min-width: 100px;
         }
 
-        .nav-btn:hover {
+        .nav-btn:hover:not(:disabled) {
             background: rgba(255,255,255,0.2);
-            border-color: #00ffff;
+            border-color: var(--correct-green);
         }
-
-        .nav-btn.prev { left: 40px; }
-        .nav-btn.next { right: 40px; }
 
         .nav-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
 
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 5px;
-            background: #00ffff;
-            transition: width 0.3s;
-        }
-
-        /* Slide Counter */
         .slide-counter {
-            position: fixed;
-            top: 20px;
-            right: 30px;
+            font-size: 0.9rem;
             color: rgba(255,255,255,0.5);
-            font-size: 1rem;
         }
 
-        /* Keyboard hint */
-        .key-hint {
+        /* Confetti */
+        .confetti-container {
             position: fixed;
-            bottom: 20px;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .slide { padding: 20px; }
+            .choice { padding: 14px 18px; }
+            .choice-letter { width: 35px; height: 35px; font-size: 0.9rem; }
+            .nav-btn { padding: 10px 20px; font-size: 0.9rem; }
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            position: fixed;
+            bottom: calc(80px + var(--sab));
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255,255,255,0.3);
-            font-size: 0.85rem;
-        }
-
-        /* ========== MOBILE RESPONSIVE ========== */
-        @media screen and (max-width: 768px) {
-            .slide {
-                padding: 25px 20px;
-                padding-top: calc(30px + env(safe-area-inset-top));
-                padding-bottom: calc(90px + env(safe-area-inset-bottom));
-            }
-
-            .title-slide h1 {
-                font-size: 2rem;
-                line-height: 1.2;
-            }
-
-            .title-slide p {
-                font-size: 1.1rem;
-                margin-bottom: 30px;
-            }
-
-            .title-slide .start-btn {
-                padding: 18px 50px;
-                font-size: 1.1rem;
-            }
-
-            .question-number {
-                font-size: 0.9rem;
-                margin-bottom: 15px;
-            }
-
-            .question-text {
-                font-size: 1.3rem;
-                margin-bottom: 30px;
-            }
-
-            .choices-container {
-                gap: 12px;
-            }
-
-            .choice-box {
-                padding: 16px 20px;
-                font-size: 1rem;
-                gap: 15px;
-            }
-
-            .choice-letter {
-                width: 36px;
-                height: 36px;
-                font-size: 1rem;
-            }
-
-            .exchange-slide h1 {
-                font-size: 2rem;
-            }
-
-            .exchange-slide p {
-                font-size: 1.3rem;
-            }
-
-            .exchange-slide .icon {
-                font-size: 4rem;
-            }
-
-            .answer-slide .correct-answer {
-                padding: 25px 30px;
-            }
-
-            .answer-slide .correct-answer .letter {
-                font-size: 3rem;
-            }
-
-            .answer-slide .correct-answer .text {
-                font-size: 1.1rem;
-            }
-
-            .final-slide h1 {
-                font-size: 2rem;
-            }
-
-            .final-slide .lesson-box {
-                padding: 25px;
-            }
-
-            .final-slide .lesson-box p {
-                font-size: 1rem;
-            }
-
-            .nav-btn {
-                bottom: 25px;
-                padding: 14px 25px;
-                font-size: 1rem;
-                bottom: calc(25px + env(safe-area-inset-bottom));
-            }
-
-            .nav-btn.prev { left: 15px; }
-            .nav-btn.next { right: 15px; }
-
-            .slide-counter {
-                top: calc(15px + env(safe-area-inset-top));
-                right: 20px;
-                font-size: 0.85rem;
-            }
-
-            .progress-bar {
-                top: env(safe-area-inset-top);
-            }
-
-            .key-hint {
-                display: none;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .title-slide h1 {
-                font-size: 1.6rem;
-            }
-
-            .question-text {
-                font-size: 1.15rem;
-                margin-bottom: 25px;
-            }
-
-            .choice-box {
-                padding: 14px 16px;
-                font-size: 0.95rem;
-                border-radius: 12px;
-            }
-
-            .choice-letter {
-                width: 32px;
-                height: 32px;
-                font-size: 0.9rem;
-            }
-
-            .nav-btn {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-
-            .exchange-slide h1 {
-                font-size: 1.7rem;
-            }
-
-            .exchange-slide p {
-                font-size: 1.1rem;
-            }
-
-            .answer-slide .correct-answer .letter {
-                font-size: 2.5rem;
-            }
-
-            .answer-slide .correct-answer .text {
-                font-size: 1rem;
-            }
-        }
-
-        /* Swipe hint for mobile */
-        .swipe-hint {
-            display: none;
-            position: fixed;
-            bottom: calc(80px + env(safe-area-inset-bottom));
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.4);
             font-size: 0.8rem;
-            text-align: center;
+            display: none;
         }
 
-        @media screen and (max-width: 768px) {
-            .swipe-hint {
-                display: block;
-            }
-        }
-
-        /* Landscape mobile */
-        @media screen and (max-height: 500px) {
-            .slide {
-                justify-content: flex-start;
-                padding-top: 20px;
-            }
-
-            .question-text {
-                font-size: 1.1rem;
-                margin-bottom: 20px;
-            }
-
-            .choice-box {
-                padding: 12px 16px;
-            }
-
-            .title-slide h1 {
-                font-size: 1.8rem;
-                margin-bottom: 10px;
-            }
-
-            .title-slide p {
-                margin-bottom: 15px;
-            }
+        @media (max-width: 768px) {
+            .swipe-hint { display: block; }
         }
     </style>
 </head>
 <body>
 
-    <div class="progress-bar" id="progress"></div>
-    <div class="slide-counter" id="counter"></div>
+    <div class="starfield"></div>
+    <div class="confetti-container" id="confetti"></div>
 
-    <div class="slide-container" id="container">
+    <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+    </div>
 
-        <!-- SLIDE 0: Title -->
-        <div class="slide title-slide active" data-slide="0">
-            <h1>Network Homogeneity<br>Fallacy Quiz</h1>
-            <p>Distributed Computing</p>
+    <div class="slides-container" id="container">
+
+        <!-- Slide 0: Title -->
+        <div class="slide title-slide active">
+            <h1>NETWORK<br>HOMOGENEITY<br>FALLACY</h1>
+            <p class="subtitle">The $327 Million Mistake</p>
             <button class="start-btn" onclick="nextSlide()">START QUIZ</button>
         </div>
 
-        <!-- SLIDE 1-10: Questions -->
-        <div class="slide question-slide" data-slide="1">
-            <p class="question-number">QUESTION 1 OF 10</p>
+        <!-- Question 1 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 1 of 10</p>
             <h2 class="question-text">What caused the Mars Climate Orbiter to crash in 1999?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> A software virus</div>
-                <div class="choice-box"><span class="choice-letter">B</span> One team used metric units, another used imperial</div>
-                <div class="choice-box"><span class="choice-letter">C</span> The spacecraft ran out of fuel</div>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> A software virus</div>
+                <div class="choice"><span class="choice-letter">B</span> One team used metric, another used imperial</div>
+                <div class="choice"><span class="choice-letter">C</span> The spacecraft ran out of fuel</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="2">
-            <p class="question-number">QUESTION 2 OF 10</p>
+        <!-- Question 2 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 2 of 10</p>
             <h2 class="question-text">How much money was lost due to the Mars Climate Orbiter failure?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> $27 million</div>
-                <div class="choice-box"><span class="choice-letter">B</span> $127 million</div>
-                <div class="choice-box"><span class="choice-letter">C</span> $327 million</div>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> $27 million</div>
+                <div class="choice"><span class="choice-letter">B</span> $127 million</div>
+                <div class="choice"><span class="choice-letter">C</span> $327 million</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="3">
-            <p class="question-number">QUESTION 3 OF 10</p>
+        <!-- Question 3 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 3 of 10</p>
             <h2 class="question-text">The "Network is Homogeneous" fallacy assumes that:</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> All systems use the same protocols and interpret data the same way</div>
-                <div class="choice-box"><span class="choice-letter">B</span> Networks are always fast and reliable</div>
-                <div class="choice-box"><span class="choice-letter">C</span> All computers have the same hardware</div>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> All systems use the same protocols</div>
+                <div class="choice"><span class="choice-letter">B</span> Networks are always fast</div>
+                <div class="choice"><span class="choice-letter">C</span> All computers have the same hardware</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="4">
-            <p class="question-number">QUESTION 4 OF 10</p>
-            <h2 class="question-text">Which is an example of protocol mismatch in everyday life?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> Using the same charger for all devices</div>
-                <div class="choice-box"><span class="choice-letter">B</span> iMessage reactions showing as text on Android</div>
-                <div class="choice-box"><span class="choice-letter">C</span> Downloading files from the internet</div>
+        <!-- Question 4 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 4 of 10</p>
+            <h2 class="question-text">Which is an example of protocol mismatch?</h2>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Using the same charger for all devices</div>
+                <div class="choice"><span class="choice-letter">B</span> iMessage reactions showing as text on Android</div>
+                <div class="choice"><span class="choice-letter">C</span> Downloading files from the internet</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="5">
-            <p class="question-number">QUESTION 5 OF 10</p>
+        <!-- Question 5 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 5 of 10</p>
             <h2 class="question-text">What is a "protocol" in distributed systems?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> A type of computer hardware</div>
-                <div class="choice-box"><span class="choice-letter">B</span> A programming language</div>
-                <div class="choice-box"><span class="choice-letter">C</span> A set of rules for how systems communicate</div>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Computer hardware</div>
+                <div class="choice"><span class="choice-letter">B</span> Programming language</div>
+                <div class="choice"><span class="choice-letter">C</span> Rules for how systems communicate</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="6">
-            <p class="question-number">QUESTION 6 OF 10</p>
-            <h2 class="question-text">Which solution helps prevent protocol mismatch?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> Using explicit contracts and shared schemas</div>
-                <div class="choice-box"><span class="choice-letter">B</span> Using faster internet connections</div>
-                <div class="choice-box"><span class="choice-letter">C</span> Hiring more programmers</div>
+        <!-- Question 6 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 6 of 10</p>
+            <h2 class="question-text">Which solution prevents protocol mismatch?</h2>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Explicit contracts and shared schemas</div>
+                <div class="choice"><span class="choice-letter">B</span> Faster internet</div>
+                <div class="choice"><span class="choice-letter">C</span> More programmers</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="7">
-            <p class="question-number">QUESTION 7 OF 10</p>
-            <h2 class="question-text">In the Mars Orbiter disaster, the two teams involved were:</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> Google and Microsoft</div>
-                <div class="choice-box"><span class="choice-letter">B</span> NASA and Lockheed Martin</div>
-                <div class="choice-box"><span class="choice-letter">C</span> SpaceX and Boeing</div>
+        <!-- Question 7 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 7 of 10</p>
+            <h2 class="question-text">The two teams in the Mars disaster were:</h2>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Google and Microsoft</div>
+                <div class="choice"><span class="choice-letter">B</span> NASA and Lockheed Martin</div>
+                <div class="choice"><span class="choice-letter">C</span> SpaceX and Boeing</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="8">
-            <p class="question-number">QUESTION 8 OF 10</p>
+        <!-- Question 8 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 8 of 10</p>
             <h2 class="question-text">What does "homogeneous network" mean?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> A network where all systems are identical in how they work</div>
-                <div class="choice-box"><span class="choice-letter">B</span> A network with only one computer</div>
-                <div class="choice-box"><span class="choice-letter">C</span> A wireless network</div>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> All systems work identically</div>
+                <div class="choice"><span class="choice-letter">B</span> A network with one computer</div>
+                <div class="choice"><span class="choice-letter">C</span> A wireless network</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="9">
-            <p class="question-number">QUESTION 9 OF 10</p>
-            <h2 class="question-text">Why is assuming network homogeneity dangerous?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> It makes the network slower</div>
-                <div class="choice-box"><span class="choice-letter">B</span> Systems may misinterpret data from each other</div>
-                <div class="choice-box"><span class="choice-letter">C</span> It uses more electricity</div>
+        <!-- Question 9 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 9 of 10</p>
+            <h2 class="question-text">Why is assuming homogeneity dangerous?</h2>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Makes the network slower</div>
+                <div class="choice"><span class="choice-letter">B</span> Systems may misinterpret data</div>
+                <div class="choice"><span class="choice-letter">C</span> Uses more electricity</div>
             </div>
         </div>
 
-        <div class="slide question-slide" data-slide="10">
-            <p class="question-number">QUESTION 10 OF 10</p>
-            <h2 class="question-text">What is the best way to handle communication between different systems?</h2>
-            <div class="choices-container">
-                <div class="choice-box"><span class="choice-letter">A</span> Assume they all work the same way</div>
-                <div class="choice-box"><span class="choice-letter">B</span> Use only one type of computer</div>
-                <div class="choice-box"><span class="choice-letter">C</span> Define clear protocols and verify compatibility</div>
+        <!-- Question 10 -->
+        <div class="slide question-slide">
+            <p class="question-number">Question 10 of 10</p>
+            <h2 class="question-text">Best way to handle different systems?</h2>
+            <div class="choices">
+                <div class="choice"><span class="choice-letter">A</span> Assume they work the same</div>
+                <div class="choice"><span class="choice-letter">B</span> Use only one computer type</div>
+                <div class="choice"><span class="choice-letter">C</span> Define clear protocols</div>
             </div>
         </div>
 
-        <!-- SLIDE 11: Exchange Papers -->
-        <div class="slide exchange-slide" data-slide="11">
-            <div class="icon">🔄</div>
+        <!-- Exchange Slide -->
+        <div class="slide exchange-slide">
+            <div class="exchange-icon">🔄</div>
             <h1>EXCHANGE PAPERS!</h1>
             <p>Pass your paper to your seatmate</p>
-            <p style="color: #888; font-size: 1.2rem;">Get ready to check...</p>
+            <p style="margin-top: 20px; opacity: 0.6;">Get ready to check answers...</p>
         </div>
 
-        <!-- SLIDE 12-21: Answers -->
-        <div class="slide answer-slide" data-slide="12">
-            <p class="question-number">ANSWER 1</p>
-            <h2 class="question-text">What caused the Mars Climate Orbiter to crash in 1999?</h2>
+        <!-- Answers 1-10 -->
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 1</p>
+            <h2 class="question-text">What caused the Mars crash?</h2>
             <div class="correct-answer">
-                <div class="letter">B</div>
-                <div class="text">One team used metric units, another used imperial</div>
+                <div class="answer-letter">B</div>
+                <div class="answer-text">One team used metric, another used imperial</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="13">
-            <p class="question-number">ANSWER 2</p>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 2</p>
             <h2 class="question-text">How much money was lost?</h2>
             <div class="correct-answer">
-                <div class="letter">C</div>
-                <div class="text">$327 million</div>
+                <div class="answer-letter">C</div>
+                <div class="answer-text">$327 million</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="14">
-            <p class="question-number">ANSWER 3</p>
-            <h2 class="question-text">The "Network is Homogeneous" fallacy assumes that:</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 3</p>
+            <h2 class="question-text">The fallacy assumes:</h2>
             <div class="correct-answer">
-                <div class="letter">A</div>
-                <div class="text">All systems use the same protocols and interpret data the same way</div>
+                <div class="answer-letter">A</div>
+                <div class="answer-text">All systems use the same protocols</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="15">
-            <p class="question-number">ANSWER 4</p>
-            <h2 class="question-text">Which is an example of protocol mismatch?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 4</p>
+            <h2 class="question-text">Protocol mismatch example:</h2>
             <div class="correct-answer">
-                <div class="letter">B</div>
-                <div class="text">iMessage reactions showing as text on Android</div>
+                <div class="answer-letter">B</div>
+                <div class="answer-text">iMessage reactions showing as text on Android</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="16">
-            <p class="question-number">ANSWER 5</p>
-            <h2 class="question-text">What is a "protocol" in distributed systems?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 5</p>
+            <h2 class="question-text">What is a protocol?</h2>
             <div class="correct-answer">
-                <div class="letter">C</div>
-                <div class="text">A set of rules for how systems communicate</div>
+                <div class="answer-letter">C</div>
+                <div class="answer-text">Rules for how systems communicate</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="17">
-            <p class="question-number">ANSWER 6</p>
-            <h2 class="question-text">Which solution helps prevent protocol mismatch?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 6</p>
+            <h2 class="question-text">Solution for protocol mismatch:</h2>
             <div class="correct-answer">
-                <div class="letter">A</div>
-                <div class="text">Using explicit contracts and shared schemas</div>
+                <div class="answer-letter">A</div>
+                <div class="answer-text">Explicit contracts and shared schemas</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="18">
-            <p class="question-number">ANSWER 7</p>
-            <h2 class="question-text">In the Mars Orbiter disaster, the two teams were:</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 7</p>
+            <h2 class="question-text">Two teams in Mars disaster:</h2>
             <div class="correct-answer">
-                <div class="letter">B</div>
-                <div class="text">NASA and Lockheed Martin</div>
+                <div class="answer-letter">B</div>
+                <div class="answer-text">NASA and Lockheed Martin</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="19">
-            <p class="question-number">ANSWER 8</p>
-            <h2 class="question-text">What does "homogeneous network" mean?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 8</p>
+            <h2 class="question-text">Homogeneous network means:</h2>
             <div class="correct-answer">
-                <div class="letter">A</div>
-                <div class="text">A network where all systems are identical in how they work</div>
+                <div class="answer-letter">A</div>
+                <div class="answer-text">All systems work identically</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="20">
-            <p class="question-number">ANSWER 9</p>
-            <h2 class="question-text">Why is assuming network homogeneity dangerous?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 9</p>
+            <h2 class="question-text">Why is assuming homogeneity dangerous?</h2>
             <div class="correct-answer">
-                <div class="letter">B</div>
-                <div class="text">Systems may misinterpret data from each other</div>
+                <div class="answer-letter">B</div>
+                <div class="answer-text">Systems may misinterpret data</div>
             </div>
         </div>
 
-        <div class="slide answer-slide" data-slide="21">
-            <p class="question-number">ANSWER 10</p>
-            <h2 class="question-text">What is the best way to handle communication between different systems?</h2>
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 10</p>
+            <h2 class="question-text">Best way to handle different systems:</h2>
             <div class="correct-answer">
-                <div class="letter">C</div>
-                <div class="text">Define clear protocols and verify compatibility</div>
+                <div class="answer-letter">C</div>
+                <div class="answer-text">Define clear protocols</div>
             </div>
         </div>
 
-        <!-- SLIDE 22: Final -->
-        <div class="slide final-slide" data-slide="22">
+        <!-- Finale -->
+        <div class="slide finale-slide">
             <h1>QUIZ COMPLETE!</h1>
-            <p class="score-text">Return papers to owners and compute the score.</p>
+            <p style="margin-bottom: 30px; opacity: 0.7;">Return papers and compute the score</p>
             <div class="lesson-box">
-                <p><strong>Remember:</strong> Never assume all systems in a network interpret data the same way. Always define clear protocols and verify compatibility.</p>
+                <p><strong>Remember:</strong> Never assume all systems interpret data the same way.</p>
+                <p style="margin-top: 15px;">Always <strong>define clear protocols</strong> and <strong>verify compatibility</strong>.</p>
+                <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">"The network is NOT homogeneous."</p>
             </div>
         </div>
 
     </div>
 
-    <button class="nav-btn prev" id="prevBtn" onclick="prevSlide()">← BACK</button>
-    <button class="nav-btn next" id="nextBtn" onclick="nextSlide()">NEXT →</button>
-    <p class="key-hint">Use arrow keys or click buttons to navigate</p>
-    <p class="swipe-hint">Swipe left/right or tap buttons</p>
+    <div class="nav-container">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← BACK</button>
+        <span class="slide-counter" id="counter"></span>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">NEXT →</button>
+    </div>
+
+    <p class="swipe-hint">Swipe left/right to navigate</p>
 
     <script>
-        let currentSlide = 0;
-        const totalSlides = document.querySelectorAll('.slide').length;
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
 
-        // Fix iOS viewport height
         function setVH() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
         }
         setVH();
         window.addEventListener('resize', setVH);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(setVH, 100);
-        });
 
         function updateSlide() {
-            const slides = document.querySelectorAll('.slide');
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active', 'exit');
-                if (index === currentSlide) {
-                    slide.classList.add('active');
-                } else if (index < currentSlide) {
-                    slide.classList.add('exit');
-                }
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'exit');
+                if (i === current) s.classList.add('active');
+                else if (i < current) s.classList.add('exit');
             });
 
-            // Update progress
-            document.getElementById('progress').style.width = ((currentSlide / (totalSlides - 1)) * 100) + '%';
+            document.getElementById('progress').style.width = `${(current / (total - 1)) * 100}%`;
+            document.getElementById('counter').textContent = `${current} / ${total - 1}`;
+            document.getElementById('prevBtn').disabled = current === 0;
+            document.getElementById('nextBtn').disabled = current === total - 1;
 
-            // Update counter
-            document.getElementById('counter').textContent = currentSlide + ' / ' + (totalSlides - 1);
-
-            // Update buttons
-            document.getElementById('prevBtn').disabled = currentSlide === 0;
-            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
-
-            // Hide nav on title
-            document.getElementById('prevBtn').style.opacity = currentSlide === 0 ? '0' : '1';
+            // Confetti on finale
+            if (current === total - 1) launchConfetti();
         }
 
         function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateSlide();
-            }
+            if (current < total - 1) { current++; updateSlide(); }
         }
 
         function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
-            }
+            if (current > 0) { current--; updateSlide(); }
         }
 
-        // Keyboard navigation
+        // Keyboard
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
-            }
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // Touch/Swipe navigation
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchEndX = 0;
-        let touchEndY = 0;
-
+        // Touch swipe
+        let startX = 0, endX = 0;
         const container = document.getElementById('container');
 
-        container.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
+        container.addEventListener('touchstart', e => {
+            startX = e.changedTouches[0].screenX;
         }, { passive: true });
 
-        container.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
+        container.addEventListener('touchend', e => {
+            endX = e.changedTouches[0].screenX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
         }, { passive: true });
 
-        function handleSwipe() {
-            const diffX = touchStartX - touchEndX;
-            const diffY = touchStartY - touchEndY;
-            const minSwipeDistance = 50;
-
-            // Only trigger if horizontal swipe is greater than vertical
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
-                if (diffX > 0) {
-                    // Swipe left - next slide
-                    nextSlide();
-                } else {
-                    // Swipe right - prev slide
-                    prevSlide();
-                }
+        // Confetti
+        function launchConfetti() {
+            const container = document.getElementById('confetti');
+            const colors = ['#00FF88', '#FFD93D', '#1E90FF', '#E57C23', '#C8102E'];
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const conf = document.createElement('div');
+                    conf.className = 'confetti';
+                    conf.style.left = Math.random() * 100 + '%';
+                    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    conf.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    container.appendChild(conf);
+                    setTimeout(() => conf.remove(), 4000);
+                }, i * 30);
             }
         }
 
-        // Prevent double-tap zoom on iOS
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-
-        // Initialize
         updateSlide();
     </script>
 </body>
