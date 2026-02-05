@@ -393,117 +393,127 @@
         <!-- Slide 0: Title -->
         <div class="slide title-slide active">
             <h1>NETWORK<br>HOMOGENEITY<br>FALLACY</h1>
-            <p class="subtitle">The $327 Million Mistake</p>
+            <p class="subtitle">Concept Check Activity</p>
             <button class="start-btn" onclick="nextSlide()">START QUIZ</button>
         </div>
 
         <!-- Question 1 -->
         <div class="slide question-slide">
             <p class="question-number">Question 1 of 10</p>
-            <h2 class="question-text">What caused the Mars Climate Orbiter to crash in 1999?</h2>
+            <h2 class="question-text">What does the "Network is Homogeneous" fallacy incorrectly assume?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> A software virus</div>
-                <div class="choice"><span class="choice-letter">B</span> One team used metric, another used imperial</div>
-                <div class="choice"><span class="choice-letter">C</span> The spacecraft ran out of fuel</div>
+                <div class="choice"><span class="choice-letter">A</span> All connections have zero latency, delay, and packet loss</div>
+                <div class="choice"><span class="choice-letter">B</span> The network will always be available and never experience downtime</div>
+                <div class="choice"><span class="choice-letter">C</span> All nodes are identical in performance, capacity, and behavior</div>
+                <div class="choice"><span class="choice-letter">D</span> All networks provide unlimited bandwidth and constant throughput</div>
             </div>
         </div>
 
         <!-- Question 2 -->
         <div class="slide question-slide">
             <p class="question-number">Question 2 of 10</p>
-            <h2 class="question-text">How much money was lost due to the Mars Climate Orbiter failure?</h2>
+            <h2 class="question-text">Hospital A sends patient records in JSON format, but Hospital B only reads XML. What is the best solution?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> $27 million</div>
-                <div class="choice"><span class="choice-letter">B</span> $127 million</div>
-                <div class="choice"><span class="choice-letter">C</span> $327 million</div>
+                <div class="choice"><span class="choice-letter">A</span> Add a middleware translation layer to convert between formats</div>
+                <div class="choice"><span class="choice-letter">B</span> Require all hospitals to rewrite their systems using one format</div>
+                <div class="choice"><span class="choice-letter">C</span> Store all patient records as plain text files to avoid conflict</div>
+                <div class="choice"><span class="choice-letter">D</span> Upgrade the network speed so data transfers happen instantly</div>
             </div>
         </div>
 
         <!-- Question 3 -->
         <div class="slide question-slide">
             <p class="question-number">Question 3 of 10</p>
-            <h2 class="question-text">The "Network is Homogeneous" fallacy assumes that:</h2>
+            <h2 class="question-text">Why is send({ "value": 4.45, "unit": "Newton" }) better than send(4.45)?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> All systems use the same protocols</div>
-                <div class="choice"><span class="choice-letter">B</span> Networks are always fast</div>
-                <div class="choice"><span class="choice-letter">C</span> All computers have the same hardware</div>
+                <div class="choice"><span class="choice-letter">A</span> It compresses the data so it takes up less network bandwidth</div>
+                <div class="choice"><span class="choice-letter">B</span> It encrypts the value so unauthorized systems cannot read it</div>
+                <div class="choice"><span class="choice-letter">C</span> It reduces latency by sending smaller packets across the wire</div>
+                <div class="choice"><span class="choice-letter">D</span> It tells the receiver exactly how to interpret the data correctly</div>
             </div>
         </div>
 
         <!-- Question 4 -->
         <div class="slide question-slide">
             <p class="question-number">Question 4 of 10</p>
-            <h2 class="question-text">Which is an example of protocol mismatch?</h2>
+            <h2 class="question-text">A smart home has devices from 5 manufacturers each using a different protocol (Zigbee, Z-Wave, Wi-Fi, AirPlay, Bluetooth). They can't communicate. What's the core issue?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Using the same charger for all devices</div>
-                <div class="choice"><span class="choice-letter">B</span> iMessage reactions showing as text on Android</div>
-                <div class="choice"><span class="choice-letter">C</span> Downloading files from the internet</div>
+                <div class="choice"><span class="choice-letter">A</span> The router doesn't have enough bandwidth for all the devices</div>
+                <div class="choice"><span class="choice-letter">B</span> There are too many connected devices causing network congestion</div>
+                <div class="choice"><span class="choice-letter">C</span> The devices are physically too far from each other to connect</div>
+                <div class="choice"><span class="choice-letter">D</span> Heterogeneous nodes are using different communication protocols</div>
             </div>
         </div>
 
         <!-- Question 5 -->
         <div class="slide question-slide">
             <p class="question-number">Question 5 of 10</p>
-            <h2 class="question-text">What is a "protocol" in distributed systems?</h2>
+            <h2 class="question-text">An online store sends prices as plain numbers. The US server reads '100' as USD, but the UK server reads it as GBP. Which solution applies?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Computer hardware</div>
-                <div class="choice"><span class="choice-letter">B</span> Programming language</div>
-                <div class="choice"><span class="choice-letter">C</span> Rules for how systems communicate</div>
+                <div class="choice"><span class="choice-letter">A</span> Upgrade both servers so they process transactions much faster</div>
+                <div class="choice"><span class="choice-letter">B</span> Tag values with self-describing data like { currency: "USD" }</div>
+                <div class="choice"><span class="choice-letter">C</span> Compress all the price data before sending it across regions</div>
+                <div class="choice"><span class="choice-letter">D</span> Add encryption to prevent unauthorized access to price values</div>
             </div>
         </div>
 
         <!-- Question 6 -->
         <div class="slide question-slide">
             <p class="question-number">Question 6 of 10</p>
-            <h2 class="question-text">Which solution prevents protocol mismatch?</h2>
+            <h2 class="question-text">What is the role of an Interface Definition Language (IDL)?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Explicit contracts and shared schemas</div>
-                <div class="choice"><span class="choice-letter">B</span> Faster internet</div>
-                <div class="choice"><span class="choice-letter">C</span> More programmers</div>
+                <div class="choice"><span class="choice-letter">A</span> It speeds up data transfer by optimizing the network routing path</div>
+                <div class="choice"><span class="choice-letter">B</span> It secures communication by encrypting all data between two nodes</div>
+                <div class="choice"><span class="choice-letter">C</span> It defines a shared contract so systems communicate across languages</div>
+                <div class="choice"><span class="choice-letter">D</span> It monitors network traffic to detect failures between two systems</div>
             </div>
         </div>
 
         <!-- Question 7 -->
         <div class="slide question-slide">
             <p class="question-number">Question 7 of 10</p>
-            <h2 class="question-text">The two teams in the Mars disaster were:</h2>
+            <h2 class="question-text">A game server sends positions as 32-bit floats, but mobile clients use 16-bit floats — causing characters to "teleport." What type of problem is this?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Google and Microsoft</div>
-                <div class="choice"><span class="choice-letter">B</span> NASA and Lockheed Martin</div>
-                <div class="choice"><span class="choice-letter">C</span> SpaceX and Boeing</div>
+                <div class="choice"><span class="choice-letter">A</span> Different data type representations cause misinterpretation across platforms</div>
+                <div class="choice"><span class="choice-letter">B</span> The server is overloaded and cannot keep up with all the player updates</div>
+                <div class="choice"><span class="choice-letter">C</span> The network has too much latency between the server and mobile clients</div>
+                <div class="choice"><span class="choice-letter">D</span> The game engine has a rendering bug that only appears on mobile devices</div>
             </div>
         </div>
 
         <!-- Question 8 -->
         <div class="slide question-slide">
             <p class="question-number">Question 8 of 10</p>
-            <h2 class="question-text">What does "homogeneous network" mean?</h2>
+            <h2 class="question-text">RCS (Rich Communication Services) solves the iPhone-Android messaging problem. Which principle does this represent?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> All systems work identically</div>
-                <div class="choice"><span class="choice-letter">B</span> A network with one computer</div>
-                <div class="choice"><span class="choice-letter">C</span> A wireless network</div>
+                <div class="choice"><span class="choice-letter">A</span> Data compression to reduce the size of messages sent across networks</div>
+                <div class="choice"><span class="choice-letter">B</span> Load balancing to distribute message traffic evenly across all servers</div>
+                <div class="choice"><span class="choice-letter">C</span> Network encryption to secure all messages between different platforms</div>
+                <div class="choice"><span class="choice-letter">D</span> Protocol standardization to unify communication across different devices</div>
             </div>
         </div>
 
         <!-- Question 9 -->
         <div class="slide question-slide">
             <p class="question-number">Question 9 of 10</p>
-            <h2 class="question-text">Why is assuming homogeneity dangerous?</h2>
+            <h2 class="question-text">Japan timestamps packages as "2025-02-05" (YYYY-MM-DD), the US uses "02/05/2025" (MM/DD/YYYY). A package dated "03/04/2025" arrives — is it March 4 or April 3? What prevents this?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Makes the network slower</div>
-                <div class="choice"><span class="choice-letter">B</span> Systems may misinterpret data</div>
-                <div class="choice"><span class="choice-letter">C</span> Uses more electricity</div>
+                <div class="choice"><span class="choice-letter">A</span> Default to one country's format and require all others to convert</div>
+                <div class="choice"><span class="choice-letter">B</span> Train all warehouse employees to recognize both date formats manually</div>
+                <div class="choice"><span class="choice-letter">C</span> Use self-describing data with an explicit standardized format tag</div>
+                <div class="choice"><span class="choice-letter">D</span> Remove dates entirely from packages and use tracking numbers instead</div>
             </div>
         </div>
 
         <!-- Question 10 -->
         <div class="slide question-slide">
             <p class="question-number">Question 10 of 10</p>
-            <h2 class="question-text">Best way to handle different systems?</h2>
+            <h2 class="question-text">Which is NOT a valid approach to solving heterogeneity in distributed systems?</h2>
             <div class="choices">
-                <div class="choice"><span class="choice-letter">A</span> Assume they work the same</div>
-                <div class="choice"><span class="choice-letter">B</span> Use only one computer type</div>
-                <div class="choice"><span class="choice-letter">C</span> Define clear protocols</div>
+                <div class="choice"><span class="choice-letter">A</span> Adding a middleware layer that translates between different system formats</div>
+                <div class="choice"><span class="choice-letter">B</span> Implementing protocol standardization so all devices share common rules</div>
+                <div class="choice"><span class="choice-letter">C</span> Using self-describing data that includes metadata tags with every message</div>
+                <div class="choice"><span class="choice-letter">D</span> Assuming all nodes will eventually be upgraded to use the same system</div>
             </div>
         </div>
 
@@ -515,94 +525,103 @@
             <p style="margin-top: 20px; opacity: 0.6;">Get ready to check answers...</p>
         </div>
 
-        <!-- Answers 1-10 -->
+        <!-- Answer 1 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 1</p>
-            <h2 class="question-text">What caused the Mars crash?</h2>
+            <h2 class="question-text">What does the fallacy assume?</h2>
             <div class="correct-answer">
-                <div class="answer-letter">B</div>
-                <div class="answer-text">One team used metric, another used imperial</div>
+                <div class="answer-letter">C</div>
+                <div class="answer-text">All nodes are identical in performance, capacity, and behavior</div>
             </div>
         </div>
 
+        <!-- Answer 2 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 2</p>
-            <h2 class="question-text">How much money was lost?</h2>
+            <h2 class="question-text">Hospital JSON vs XML — best solution?</h2>
             <div class="correct-answer">
-                <div class="answer-letter">C</div>
-                <div class="answer-text">$327 million</div>
+                <div class="answer-letter">A</div>
+                <div class="answer-text">Add a middleware translation layer to convert between formats</div>
             </div>
         </div>
 
+        <!-- Answer 3 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 3</p>
-            <h2 class="question-text">The fallacy assumes:</h2>
+            <h2 class="question-text">Why is self-describing data better?</h2>
             <div class="correct-answer">
-                <div class="answer-letter">A</div>
-                <div class="answer-text">All systems use the same protocols</div>
+                <div class="answer-letter">D</div>
+                <div class="answer-text">It tells the receiver exactly how to interpret the data correctly</div>
             </div>
         </div>
 
+        <!-- Answer 4 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 4</p>
-            <h2 class="question-text">Protocol mismatch example:</h2>
+            <h2 class="question-text">Smart home devices can't communicate — core issue?</h2>
             <div class="correct-answer">
-                <div class="answer-letter">B</div>
-                <div class="answer-text">iMessage reactions showing as text on Android</div>
+                <div class="answer-letter">D</div>
+                <div class="answer-text">Heterogeneous nodes are using different communication protocols</div>
             </div>
         </div>
 
+        <!-- Answer 5 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 5</p>
-            <h2 class="question-text">What is a protocol?</h2>
+            <h2 class="question-text">USD vs GBP price confusion — solution?</h2>
             <div class="correct-answer">
-                <div class="answer-letter">C</div>
-                <div class="answer-text">Rules for how systems communicate</div>
+                <div class="answer-letter">B</div>
+                <div class="answer-text">Tag values with self-describing data like { currency: "USD" }</div>
             </div>
         </div>
 
+        <!-- Answer 6 -->
         <div class="slide answer-slide">
             <p class="question-number">Answer 6</p>
-            <h2 class="question-text">Solution for protocol mismatch:</h2>
-            <div class="correct-answer">
-                <div class="answer-letter">A</div>
-                <div class="answer-text">Explicit contracts and shared schemas</div>
-            </div>
-        </div>
-
-        <div class="slide answer-slide">
-            <p class="question-number">Answer 7</p>
-            <h2 class="question-text">Two teams in Mars disaster:</h2>
-            <div class="correct-answer">
-                <div class="answer-letter">B</div>
-                <div class="answer-text">NASA and Lockheed Martin</div>
-            </div>
-        </div>
-
-        <div class="slide answer-slide">
-            <p class="question-number">Answer 8</p>
-            <h2 class="question-text">Homogeneous network means:</h2>
-            <div class="correct-answer">
-                <div class="answer-letter">A</div>
-                <div class="answer-text">All systems work identically</div>
-            </div>
-        </div>
-
-        <div class="slide answer-slide">
-            <p class="question-number">Answer 9</p>
-            <h2 class="question-text">Why is assuming homogeneity dangerous?</h2>
-            <div class="correct-answer">
-                <div class="answer-letter">B</div>
-                <div class="answer-text">Systems may misinterpret data</div>
-            </div>
-        </div>
-
-        <div class="slide answer-slide">
-            <p class="question-number">Answer 10</p>
-            <h2 class="question-text">Best way to handle different systems:</h2>
+            <h2 class="question-text">Role of an IDL?</h2>
             <div class="correct-answer">
                 <div class="answer-letter">C</div>
-                <div class="answer-text">Define clear protocols</div>
+                <div class="answer-text">It defines a shared contract so systems communicate across languages</div>
+            </div>
+        </div>
+
+        <!-- Answer 7 -->
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 7</p>
+            <h2 class="question-text">32-bit vs 16-bit float — characters teleport?</h2>
+            <div class="correct-answer">
+                <div class="answer-letter">A</div>
+                <div class="answer-text">Different data type representations cause misinterpretation across platforms</div>
+            </div>
+        </div>
+
+        <!-- Answer 8 -->
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 8</p>
+            <h2 class="question-text">RCS solves iPhone-Android messaging — which principle?</h2>
+            <div class="correct-answer">
+                <div class="answer-letter">D</div>
+                <div class="answer-text">Protocol standardization to unify communication across different devices</div>
+            </div>
+        </div>
+
+        <!-- Answer 9 -->
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 9</p>
+            <h2 class="question-text">Date format confusion — how to prevent?</h2>
+            <div class="correct-answer">
+                <div class="answer-letter">C</div>
+                <div class="answer-text">Use self-describing data with an explicit standardized format tag</div>
+            </div>
+        </div>
+
+        <!-- Answer 10 -->
+        <div class="slide answer-slide">
+            <p class="question-number">Answer 10</p>
+            <h2 class="question-text">Which is NOT a valid solution?</h2>
+            <div class="correct-answer">
+                <div class="answer-letter">D</div>
+                <div class="answer-text">Assuming all nodes will eventually be upgraded to use the same system</div>
             </div>
         </div>
 
@@ -612,7 +631,7 @@
             <p style="margin-bottom: 30px; opacity: 0.7;">Return papers and compute the score</p>
             <div class="lesson-box">
                 <p><strong>Remember:</strong> Never assume all systems interpret data the same way.</p>
-                <p style="margin-top: 15px;">Always <strong>define clear protocols</strong> and <strong>verify compatibility</strong>.</p>
+                <p style="margin-top: 15px;">Use <strong>middleware</strong>, <strong>self-describing data</strong>, <strong>IDLs</strong>, and <strong>protocol standardization</strong> to bridge heterogeneous systems.</p>
                 <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">"The network is NOT homogeneous."</p>
             </div>
         </div>
